@@ -20,4 +20,5 @@ tenjin 是基于 FreeSWITCH 的开源呼叫中心系统，管理系统主要使�
 github 下载地址: [freeswitch-sound-cn](https://github.com/log2k/freeswitch-sound-cn/archive/master.zip) 或者 git clone
 ```
 git clone git@github.com:log2k/freeswitch-sound-cn.git sounds
+cp -R sounds /usr/local/freeswitch
 ```
