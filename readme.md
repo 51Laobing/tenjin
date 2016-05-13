@@ -16,3 +16,8 @@ tenjin 是基于 FreeSWITCH 的开源呼叫中心系统，管理系统主要使�
 2. 群呼转座席固定模式
 3. 半自动一对一外呼
 
+### FreeSWITCH 中文语音包 (只包含部分中文语音)
+github 下载地址: [freeswitch-sound-cn](https://github.com/log2k/freeswitch-sound-cn/archive/master.zip) 或者 git clone
+```
+git clone git@github.com:log2k/freeswitch-sound-cn.git
+```
