@@ -72,13 +72,6 @@ if (isset($_GET['action'])) {
 } else {
     $record = null;
 
-    $data['where']['start'] = date('Y-m-d 08:00:00', time());
-    $data['where']['end'] = date('Y-m-d 20:00:00', time());
-    $data['where']['duration'] = 0;
-    $data['where']['caller'] = null;
-    $data['where']['called'] = null;
-    $data['where']['page'] = 0;
-    
     $data['result'] = $record;
     $data['user'] = $user;
 
