@@ -138,13 +138,13 @@
                 <span>接通数: <span class="info info-answer">{$task['answer']}</span></span> ,
                 <span>接通率: <span class="info info-rate">{if $task['total'] > $task['remainder']}{intval(($task['answer'] / ($task['total'] - $task['remainder'])) * 100)}%{/if}{if $task['remainder'] >= $task['total']}0%{/if}</span></span> ,
                 <span>转接数: <span class="info info-complete">{$task['complete']}</span></span>
-                <span>转接率: <span class="info info-rate">{if $task['answer'] > 0}{intval(($task['complete'] / $task['answer']) * 100)}%{/if}</span></span>
+                <span>转接率: <span class="info info-rate">{if $task['answer'] > 0}{intval(($task['complete'] / $task['answer']) * 100)}%{/if}{if $task['answer'] < 1}0%{/if}</span></span>
                 {/if}
                 {if $task['type'] === 2}
                 <span>接通数: <span class="info info-answer">{$task['answer']}</span></span> ,
                 <span>接通率: <span class="info info-rate">{if $task['total'] > $task['remainder']}{intval(($task['answer'] / ($task['total'] - $task['remainder'])) * 100)}%{/if}{if $task['remainder'] >= $task['total']}0%{/if}</span></span> ,
                 <span>转接数: <span class="info info-complete">{$task['complete']}</span></span>
-                <span>转接率: <span class="info info-rate">{if $task['answer'] > 0}{intval(($task['complete'] / $task['answer']) * 100)}%{/if}</span></span>
+                <span>转接率: <span class="info info-rate">{if $task['answer'] > 0}{intval(($task['complete'] / $task['answer']) * 100)}%{/if}{if $task['answer'] < 1}0%{/if}</span></span>
                 {/if}
                 {if $task['type'] === 3}
                 <span>接通数: <span class="info info-answer">{$task['answer']}</span></span> ,
