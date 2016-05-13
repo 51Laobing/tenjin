@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="refresh" content="30">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.user.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      .jumbotron {
+      background-color:#FBFBFB;
+      -moz-box-shadow: 1px 2px 3px #cccccc;
+      -webkit-box-shadow: 1px 2px 3px #cccccc;
+      box-shadow: 1px 2px 3px #cccccc;
+      }
+      .navbar {
+      background-image: linear-gradient(#89D28F, #69CC6C 60%, #46A74D);
+      border-bottom: 1px solid #D7F5D6;
+      }
+      .navbar-default {
+      background-color: #A0CE9D;
+      border-color: #9FEF96;
+      }
+      .navbar-default .navbar-text {
+      color: #FFFFFF;
+      }
+      .text-primary {
+      color: #668C5F;
+      }
+      .work-box {
+      margin-top: 35px;
+      }
+      .pull-right {
+      margin-right: 12px;
+      }
+      .icon {
+      margin-bottom: -26px;
+      width: 35px;
+      height: 35px;
+      -moz-box-shadow: 1px 2px 3px #999999;
+      -webkit-box-shadow: 1px 2px 3px #999999;
+      box-shadow: 1px 2px 3px #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container work-box">
+      <div class="jumbotron" style="padding:20px">
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <ul class="nav navbar-nav">
+              <li><img src="/img/{$user['icon']}" class="img-circle icon" alt="icon"></li>
+              <li><a href="#"><b class="text-primary">{$user['name']}</b> ({$user['uid']})</a></li>
+              <li><a href="user.php{if $status === 2}?status=start{/if}{if $status === 3}?status=stop{/if}">座席状态: <span class="glyphicon glyphicon-{if $status === 1}remove-sign{/if}{if $status === 2}minus-sign{/if}{if $status === 3}ok-sign{/if}" aria-hidden="true"></span></a></li>
+              <li><p class="navbar-text" style="font-size:14px">To live is to change the world  -  Steve Jobs.</p></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 我的订单</a></li>
+              <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+            </ul>
+          </div>
+        </nav>
+        <div>
+          <ul class="list-inline text-success">
+            <li style="margin-left:5px"><span class="glyphicon glyphicon-expand" aria-hidden="true"></span> <b>当前任务:</b> {$task['name']}</li>
+            <li><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <b>业务类型:</b> {if $task['business'] === 0}未知业务{/if}{if $task['business'] === 1}商品订单{/if}</li>
+            <li><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> <b>已完成/总数:</b> {$task['total'] - $task['remainder']}/{$task['total']}</li>
+            <li class="pull-right"><button class="btn btn-default btn-sm" onclick="the_new_business(1)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加订单</button></li>
+          </ul>
+        </div>
+        <hr />
+        <div>
+          <table class="table table-condensed table-striped table-hover">
+            <thead>
+              <tr>
+                <th class="td-icon">#</th>
+                <th>订单编号</th>
+                <th>客户姓名</th>
+                <th>手机号码</th>
+                <th>商品名称(价格)</th>
+                <th>商品数量</th>
+                <th>订单状态</th>
+                <th>物流状态</th>
+                <th>质检员</th>
+                <th class="text-right">下单时间</th>
+              </tr>
+            </thead>
+            <tbody class="text-muted">
+              {if is_array($orders)}
+              {foreach $orders as $order}
+              <tr>
+                <td class="td-icon"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></td>
+                <td>{$order['id']}</td>
+                <td>{mb_substr($order['name'], 0, 4, 'UTF-8')}</td>
+                <td>{$order['phone']}</td>
+                <td>{$products[$order['product']]['name']}({intval($products[$order['product']]['price'])})</td>
+                <td>{$order['number']}</td>
+                <td><span class="badge badge-{if $order['status'] === 1}default{/if}{if $order['status'] === 2}success{/if}{if $order['status'] === 3}danger{/if}{if $order['status'] === 4}info{/if}{if $order['status'] === 5}warning{/if}"{if $order['status'] === 3 || $order['status'] === 5} data-toggle="tooltip" data-placement="top" title="{$order['reason']}"{/if}>{if $order['status'] === 1}待审核{/if}{if $order['status'] === 2}已通过{/if}{if $order['status'] === 3}不通过{/if}{if $order['status'] === 4}已发货{/if}{if $order['status'] === 5}待 &nbsp定{/if}</span></td>
+                <td>{$order['logistics_status']}</td>
+                <td>{$order['quality']}</td>
+                <td class="text-right">{$order['create_time']}</td>
+              </tr>
+              {/foreach}
+              {/if}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+    <script type="text/javascript" src="/js/layer.js"></script>
+    <script type="text/javascript" src="/js/user.js"></script>
+    <script type="text/javascript">
+      $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,185 @@
+/* 
+ * bootstrap custom extension style
+ * Customizations just for the template; these are not necessary for anything.
+ *
+ */
+
+/* body style */
+body {
+    padding-top: 0px;
+    padding-bottom: 30px;
+    background-color: #f0f0f0;
+    font-family: Microsoft YaHei,Verdana,sans-serif,宋体;
+}
+
+body, .navbar-fixed-top, .navbar-fixed-bottom {
+    min-width: 1000px;
+}
+
+.navbar-toggle {
+    display: none;
+}
+
+/* Reset the container */
+.container {
+    width: 1000px;
+    max-width: none !important;
+}
+
+label {
+    color: #666666;
+}
+
+.progress {
+    margin-bottom: 0px;
+}
+
+.help-block {
+    color: #aaaaaa;
+    margin-top: 3px;
+}
+
+/* Reset the tables */
+.table thead tr th {
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.table tbody tr td {
+    border-top: 1px solid #EEEEEE;
+}
+
+.input-sm {
+    height: 28px;
+    padding: 3px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+}
+
+select.input-sm {
+    height: 28px;
+    line-height: 28px;
+}
+
+.btn-sm {
+    padding: 3px 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+.form-horizontal .control-label {
+    padding-top: 5px;
+}
+
+.form-horizontal .checkbox {
+    padding-top: 5px;
+}
+
+.badge-default {
+    background-color: #999;
+}
+
+.badge-dark {
+
+}
+
+.badge-light {
+
+}
+
+.text-muted {
+    color: #555;
+}
+
+a:hover {
+    text-decoration:none;
+}
+
+.badge-success {
+    background-color: #5cb85c;
+}
+
+.badge-info {
+    background-color: #5bc0de;
+}
+
+.badge-warning {
+    background-color: #f0ad4e;
+}
+
+.badge-danger {
+    background-color: #d9534f;
+}
+
+.box {
+    border-radius: 6px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    background-color: #fcfcfc;
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+}
+
+.query {
+    padding: 10px;
+    color: #555555;
+}
+
+.td-left {
+    text-align: left;
+}
+
+.td-right {
+    text-algin: right;
+}
+
+.text-title {
+    color: #666666;
+    line-height: 30px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.text-help {
+    color: #aaaaaa;
+    line-height: 30px;
+    text-align: left;
+}
+
+.form-box {
+    padding: 15px;
+    height: 50px;
+}
+
+.form-checkbox {
+    margin: 5px 0px 0px 0px;
+    height: 30px;
+    text-align: left;
+}
+
+.form-checkbox label {
+    margin: 0px;
+}
+
+.form-submit {
+    float: left;
+    margin-left: 335px;
+    padding: 0px;
+    height: 50px;
+}
+
+.form-cancel {
+    float: left;
+    padding: 0px;
+    margin-left: 30px;
+    height: 50px;
+}
+
+.form-submit button, .form-cancel button {
+    width: 80px;
+}

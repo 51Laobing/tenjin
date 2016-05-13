@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.new.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">控制面板</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="../company.php">企业管理</a></li>
+            <li class="active"><a href="../users.php">账号管理</a></li>
+            <li><a href="../sounds.php">语音审核</a></li>
+            <li><a href="../service.php">服务管理</a></li>
+            <li><a href="../status.php">服务器状态</a></li>
+            <li><a href="../logs.php">日志记录</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['uid']}</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container box">
+      <div>
+        <ol class="breadcrumb">
+          <li class="active">当前位置:</li>
+          <li><a href="../users.php">账号管理</a></li>
+          <li class="active">账号编辑</li>
+        </ol>
+      </div>
+      <div>
+        <form class="form-horizontal" action="edit.php" method="post">
+          <div class="form-group">
+            <label class="control-label col-sm-4">账号名称: </label>
+            <div class="col-sm-3">
+              <input type="hidden" name="uid" value="{$users['uid']}">
+              <input type="email" class="form-control input-sm" style="font-weight:bold" value="{$users['uid']}" disabled>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">* 账户名称，不可修改</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">账号密码: </label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control input-sm" style="color:red;font-weight:bold" name="password" value="">
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">* 账户登录密码</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">所属公司: </label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control input-sm" value="{$users['company_name']}" disabled>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">* 账号所属公司</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-3 col-sm-offset-4">
+              <input type="hidden" name="action" value="edit">
+              <button type="submit" class="btn btn-success" style="width:80px">保存修改</button>
+              <a class="btn btn-default" href="../users.php" style="margin-left:20px;width:80px">取 消</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

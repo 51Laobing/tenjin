@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      hr {
+      margin-top:10px;margin-bottom:10px;
+      }
+      th {
+      text-align:center;
+      }
+      td {
+      text-align:center;
+      }
+      .table .td-id {
+      text-align:left;padding-left:15px;
+      }
+      audio {
+      width: 240px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="/status.php">状态监控</a></li>
+            <li><a href="/task.php">任务管理</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li><a href="/customer.php">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li><a href="/help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li><a id="account" href="/account.php"{if $alert === true} data-container="body" data-toggle="popover" data-placement="bottom" data-content="您的账户余额已不足"{/if}>我的账户</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container box">
+      <div class="query">
+        <form class="form-inline" action="cdr.php" role="form">
+          <input type="hidden" name="action" value="query">
+          <div class="form-group">
+            <label>日 期: </label>
+            <input id="start" type="text" class="form-control input-sm" style="width:160px" name="start" value="{$where['start']}" />
+          </div>
+          <div class="form-group">
+            <label> - </label>
+            <input id="end" type="text" class="form-control input-sm" style="width:160px" name="end" value="{$where['end']}" />
+          </div>
+          <div class="form-group" style="margin-left:10px">
+            <label>通话时长 </label>
+            <select class="form-control input-sm" name="duration" style="width:85px">
+              <option value="0"{if $where['duration'] === 0} selected="selected"{/if}>0分钟</option>
+              <option value="180"{if $where['duration'] === 180} selected="selected"{/if}>3分钟</option>
+              <option value="300"{if $where['duration'] === 300} selected="selected"{/if}>5分钟</option>
+              <option value="900"{if $where['duration'] === 900} selected="selected"{/if}>15分钟</option>
+              <option value="1800"{if $where['duration'] === 1800} selected="selected"{/if}>30分钟</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-left:8px">
+            <label>主叫: </label>
+            <input type="text" class="form-control input-sm" name="caller" style="width:120px;color:#666;font-size:13px;font-weight:bold" value="{if $where['caller'] != null}{$where['caller']}{/if}"/>
+          </div>
+          <div class="form-group" style="margin-left:8px">
+            <label>被叫: </label>
+            <input type="text" class="form-control input-sm" name="called" style="width:120px;color:#666;font-size:13px;font-weight:bold" value="{if $where['called'] != null}{$where['called']}{/if}"/>
+          </div>
+          <button id="query" type="submit" class="btn btn-success btn-sm" style="margin-left:18px;width:50px">查 询</button>
+        </form>
+      </div>
+      <hr />
+      <div>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="td-id">记录编号</th>
+              <th>主叫号码</th>
+              <th>被叫号码</th>
+              <th>号码归属地</th>
+              <th>通话时长</th>
+              <th>通话时间</th>
+              <th>录音试听</th>
+              <th>录音下载</th>
+            </tr>
+          </thead>
+          <tbody class="text-muted">
+            {if is_array($result)}
+            {foreach $result as $r}
+            <tr>
+              <td class="td-id">{$r['id']}</td>
+              <td>{$r['caller_id_number']}</td>
+              <td>{$r['destination_number']}</td>
+              <td>江苏苏州中国移动</td>
+              <td><span class="badge badge-default">{$r['billsec']}</span></td>
+              <td>{$r['start_stamp']}</td>
+              <td><a href="javascript:;" style="color:#337ab7" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="<audio src='/record{$r['file']}' autoplay='autoplay' preload='metadata' controls='controls'>您的浏览器不支持录音试听</audio>"><span class="glyphicon glyphicon-headphones"></span> 试 听</a></td>
+              <td><a href="/record{$r['file']}" style="color:#555555">本地下载</a></td>
+            </tr>
+            {/foreach}
+            {/if}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <nav>
+          <ul class="pager pagination-sm">
+            <li class="previous"><a href="cdr.php?action=query&start={urlencode($where['start'])}&end={urlencode($where['end'])}&duration={$where['duration']}&caller={$where['caller']}&called={$where['called']}&page={if $where['page'] > 0}{$where['page'] - 1}{/if}{if $where['page'] === 0}0{/if}"><span aria-hidden="true">&larr;</span> 上一页</a></li>
+            <li class="text-center">当前第 {$where['page']} 页</li>
+            <li class="next"><a href="cdr.php?action=query&start={urlencode($where['start'])}&end={urlencode($where['end'])}&duration={$where['duration']}&caller={$where['caller']}&called={$where['called']}&page={$where['page'] + 1}">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/js/layer.js"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+    <script type="text/javascript">
+      $('#start').datetimepicker({
+      format: 'yyyy-mm-dd hh:ii:ss',
+      language: 'zh-CN',
+      autoclose: true
+      });
+      $('#end').datetimepicker({
+      format: 'yyyy-mm-dd hh:ii:ss',
+      language: 'zh-CN',
+      autoclose: true
+      });
+
+      $(function () {
+      $('[data-toggle="popover"]').popover({
+      html: true
+      });
+      })
+    </script>
+  </body>
+</html>

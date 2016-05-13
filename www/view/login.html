@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      .container {
+      margin-top: 155px;
+      padding: 15px 35px 35px 35px;
+      width: 420px;
+      border-radius: 6px;
+      background-color: #fcfcfc;
+      border:#c0c0c0 1px solid;
+      background:#fff;
+      color:#555;
+      filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=4);
+      -moz-box-shadow: 2px 2px 10px #909090;
+      -webkit-box-shadow: 2px 2px 10px #909090;
+      box-shadow:2px 2px 10px #909090;
+      }
+
+      .form-control {
+          margin-top: 20px;
+          font-weight:bold;
+      }
+      .checkbox {
+      padding:10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" style="zindex:9">
+      <form class="form-signin" action="login.php" method="post">
+        <h2 class="form-signin-heading text-center">企业呼叫中心平台</h2>
+        <label for="inputEmail" class="sr-only">账 号:</label>
+        <input type="text" class="form-control" name="username" placeholder="输入账户名" required autofocus>
+        <label for="inputPassword" class="sr-only">密 码:</label>
+        <input type="password" id="inputPassword" class="form-control input_key" name="password" placeholder="输入密码" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> 记住登录状态 (<small> 如果您忘记了密码, 请联系管理员</small>)
+          </label>
+        </div>
+        <button class="btn btn-lg btn-success btn-block" type="submit">登 录</button>
+      </form>
+    </div>
+    <img src="/img/bg.jpg" height="100%" width="100%" style="position:absolute;top:0;left:0;right:100;bottom:500;z-index:-1"/>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

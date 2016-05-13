@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      .jumbotron {
+      background-color:#FBFBFB;
+      }
+      .text-left b {
+      padding-left: 85px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="/status.php">状态监控</a></li>
+            <li><a href="/task.php">任务管理</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li><a href="/customer.php">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li class="active"><a href="/help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li><a id="account" href="/account.php"{if $alert === true} data-container="body" data-toggle="popover" data-placement="bottom" data-content="您的账户余额已不足"{/if}>我的账户</a></li>
+            <li><a href="logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="jumbotron">
+        <div>
+          <ul class="list-unstyled text-muted">
+            <li><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> <b>座席端功能代码</b> (用电话拨打以下对应号码) : </li>
+          </ul>
+          <div>
+            座席登录： <code><b>001</b></code> 座席暂停：<code><b>002</b></code> 座席恢复：<code><b>003</b></code> 座席退出：<code><b>004</b></code>
+          </div>
+        </div>
+        <br />
+        <div>
+          <ul class="list-unstyled text-muted">
+            <li><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> <b>任务类型说明</b> :</li>
+          </ul>
+          <div>
+            <table class="table table-condensed table-striped table-hover">
+              <tbody class="text-muted">
+                <tr><td><span class="badge badge-success">群呼转座席(自动)</span></td><td>系统根据拨号比例和座席空闲数自动调整并发进行外呼，当客户接通后转接到座席</td></tr>
+                <tr><td><span class="badge badge-info">群呼转座席(固定)</span></td><td>系统根据您设定的固定并发<b>(</b><code>并发数保持不变</code><b>)</b>进行外呼，当客户接通后转接到座席</td></tr>
+                <tr><td><span class="badge badge-danger">手动批量外呼</span></td><td>此模式下，座席端电话按 <b><code>9</code></b> 系统会自动选取一个客户号码进行呼叫，按 <b><code>7</code></b> 查询上一次客户号码</td></tr>
+                <tr><td><span class="badge badge-default">语音群呼广告</span></td><td>系统会批量对客户号码进行呼叫，当客户接通后播放一段语音，可对客户的按键进行提取统计</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br />
+        <div>
+          <ul class="list-unstyled text-muted">
+            <li><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> <b>座席软电话注册说明:</b></li>
+          </ul>
+          <div style="height:550px">
+            <span style="float:left"><img src="/img/eyebeam.png"></span>
+            <span style="float:left;width:360px">
+              <table class="table table-condensed table-striped table-hover" style="float:left;margin-top:28px">
+                <tbody class="text-muted">
+                  <tr><td class="text-center"><b>SIP账号设定 -&gt "添加(A)"</b></td></tr>
+                  <tr><td class="text-center">座席账号和密码请查看座席管理编辑页面</td></tr>
+                  <tr><td class="text-left"><code><b>显示名:&nbsp&nbsp&nbsp&nbsp45001</b> 座席账号</code></td></tr>
+                  <tr><td class="text-left"><code><b>用户名:&nbsp&nbsp&nbsp&nbsp45001</b> 座席账号</code></td></tr>
+                  <tr><td class="text-left"><code><b>口&nbsp&nbsp令:&nbsp&nbsp&nbsp&nbsp12345678</b> 座席密码</code></td></tr>
+                  <tr><td class="text-left"><code><b>鉴权用户名:&nbsp45001</b> 座席账号</code></td></tr>
+                  <tr><td class="text-left"><code><b>域&nbsp&nbsp名:&nbsp&nbsp&nbsp&nbsp{$domain}</b></code></td></tr>
+                </tbody>
+              </table>
+            </span>
+          </div>
+        </div>
+        <br />
+        <hr />
+        <div>
+          <p class="text-left text-muted" style="font-size:13px">Copyright © 2015 Jatogroup Inc. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+  </body>
+</html>

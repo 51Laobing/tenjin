@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      th {
+      text-align:center;
+      }
+      td {
+      text-align:center;
+      }
+      .table .td-icon {
+      width:50px;
+      }
+      .td-edit {
+      text-align:right;padding-right:35px;
+      }
+      .info {
+      padding:1px 5px;
+      font-size:10px;
+      color:#ffffff;
+      border-radius:8px;
+      }
+      .info-default {
+      background-color:#9de486;
+      }
+      .info-primary {
+      background-color:#a6c7B8;
+      }
+      .info-success {
+      background-color:#94dc94;
+      }
+      .info-warning {
+      background-color:#f1bb70;
+      }
+      .info-danger {
+      background-color:#e88987;
+      }
+      .text-success {
+      font-weight:bold;
+      }
+      .info-answer {
+      background-color:#8CBF83;
+      }
+      .info-rate {
+      background-color:#66A968;
+      }
+      .info-complete {
+      background-color:#8CBF83;
+      }
+      .breadcrumb>.pull-right:before {
+      content:"";
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="/status.php">状态监控</a></li>
+            <li class="active"><a href="#">任务管理</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li class="disabled"><a href="#">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li><a href="/help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li><a id="account" href="/account.php"{if $alert === true} data-container="body" data-toggle="popover" data-placement="bottom" data-content="您的账户余额已不足"{/if}>我的账户</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container box">
+      <div>
+        <ol class="breadcrumb">
+          <li class="active">当前位置:</li>
+          <li><a href="#">任务管理</a></li>
+          <li class="active">所有任务</li>
+          <li class="pull-right"><a class="btn btn-default btn-xs" href="task/add.php"><span class="glyphicon glyphicon-plus"></span> 创建任务</a></li>
+        </ol>
+      </div>
+      <div>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="td-icon text-center">#</th>
+              <th class="text-center">任务名称</th>
+              <th>任务类型</th>
+              <th>已呼/总数</th>
+              <th class="text-left">数据统计</th>
+              <th>删除操作</th>
+              <th>启动/停止</th>
+              <th class="td-edit">编辑操作</th>
+            </tr>
+          </thead>
+          <tbody class="text-muted">
+            {if is_array($tasks)}
+            {foreach $tasks as $task}
+            <tr{if $task['run'] === true} class="text-success" style="background-color:#dff0d8"{/if}>
+              <td><span class="glyphicon{if $task['run'] === true} glyphicon-play-circle{/if}{if $task['run'] === false} glyphicon-tasks{/if}"></span></td>
+              <td title="{$task['name']}">{mb_substr($task['name'], 0, 5, 'UTF-8')}</td>
+              <td class="text-primary">{if $task['type'] === 1}群呼转座席(自动){/if}{if $task['type'] === 2}群呼转座席(固定){/if}{if $task['type'] === 3}手动批量外呼{/if}{if $task['type'] === 4}语音群呼广告{/if}</td>
+              <td>{$task['total'] - $task['remainder']}/{$task['total']}</td>
+              <td class="text-left">
+                {if $task['type'] === 1}
+                <span>接通数: <span class="info info-answer">{$task['answer']}</span></span> ,
+                <span>接通率: <span class="info info-rate">{if $task['total'] > $task['remainder']}{intval(($task['answer'] / ($task['total'] - $task['remainder'])) * 100)}%{/if}{if $task['remainder'] >= $task['total']}0%{/if}</span></span> ,
+                <span>转接数: <span class="info info-complete">{$task['complete']}</span></span>
+                <span>转接率: <span class="info info-rate">{if $task['answer'] > 0}{intval(($task['complete'] / $task['answer']) * 100)}%{/if}</span></span>
+                {/if}
+                {if $task['type'] === 2}
+                <span>接通数: <span class="info info-answer">{$task['answer']}</span></span> ,
+                <span>接通率: <span class="info info-rate">{if $task['total'] > $task['remainder']}{intval(($task['answer'] / ($task['total'] - $task['remainder'])) * 100)}%{/if}{if $task['remainder'] >= $task['total']}0%{/if}</span></span> ,
+                <span>转接数: <span class="info info-complete">{$task['complete']}</span></span>
+                <span>转接率: <span class="info info-rate">{if $task['answer'] > 0}{intval(($task['complete'] / $task['answer']) * 100)}%{/if}</span></span>
+                {/if}
+                {if $task['type'] === 3}
+                <span>接通数: <span class="info info-answer">{$task['answer']}</span></span> ,
+                <span>接通率: <span class="info info-rate">{if $task['total'] > $task['remainder']}{intval(($task['answer'] / ($task['total'] - $task['remainder'])) * 100)}%{/if}{if $task['remainder'] >= $task['total']}0%{/if}</span></span> ,
+                <span>完成率: <span class="info info-complete">{if $task['total'] > 0}{intval((($task['total'] - $task['remainder']) / $task['total']) * 100)}%{/if}</span></span>
+                {/if}
+                {if $task['type'] === 4}
+                <span>接通数: <span class="info info-answer">{$task['answer']}</span></span> ,
+                <span>按通率: <span class="info info-rate">25</span></span> ,
+                {/if}
+              </td>
+              <td><a href="javascript:remove({$task['id']})" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span> 删 除</a></td>
+              <td><a href="task.php?action={if $task['run'] === true}stop{/if}{if $task['run'] === false}start{/if}&task={$task['id']}" class="btn btn-{if $task['run'] === true}danger{/if}{if $task['run'] === false}success{/if} btn-xs"><span class="glyphicon{if $task['run'] === true} glyphicon-unchecked{/if}{if $task['run'] === false} glyphicon-expand{/if}"></span> {if $task['run'] === true}停 止{/if}{if $task['run'] === false}启 动{/if}</a></td>
+              <td class="td-edit"><a class="btn btn-default btn-xs" href="task/edit.php?task={$task['id']}"><span class="glyphicon glyphicon-edit"></span> 编 辑</a></td>
+            </tr>
+            {/foreach}
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/layer.js"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+    <script type="text/javascript" src="/js/task.js"></script>
+  </body>
+</html>

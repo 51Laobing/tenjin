@@ -1,0 +1,55 @@
+
+// company
+HMSET company.1 name 杰通企业 task 1 concurrent 500 billing jietong level 3 sound_check 1 create_time 2015-12-25 08:00:00
+HMSET company.2 name 杰通企业 task 1 concurrent 500 billing jietong level 3 sound_check 1 create_time 2015-12-25 08:00:00
+
+
+SADD taskpool.1 1 2 3 4
+SADD taskpool.2 5 6 7 8
+
+HMSET task.1 name 江苏州苏 type 1 play 1 sound 1 total 10000 answer 1800 complete 1200 create_time 1400034 // 群呼转座席(自动模式)
+HMSET task.2 name 江苏州苏 type 2 play 1 sound 1 total 10000 create_time 1400034                           // 群呼转座席(固定模式)
+HMSET task.3 name 江苏州苏 type 3 total 10000 answer 1500 create_time 1400034                              // 手动批量外呼
+HMSET task.4 name 江苏苏州 type 4 presskey 1 sound 1 total 10000 answer 1200 create_time 1400034           // 语音群呼广告
+
+RPUSH data.1 13656212103 15021553368 13656212103 13656212103 15021553368 13656212103
+RPUSH data.2 13656212103 15021553368 13656212103 13656212103 15021553368 13656212103
+RPUSH data.3 13656212103 15021553368 13656212103 13656212103 15021553368 13656212103
+RPUSH data.4 13656212103 15021553368 13656212103 13656212103 15021553368 13656212103
+
+// users
+HMSET user.jtoadmin name 周杰伦 password 10470c3b4b1fed12c3baac014be15fac67c6e815 company 1 create_time 1400882734 last_login 1487292301 last_ipaddr 112.2.21.12
+HMSET user.ccadmin name 周杰伦 password 10470c3b4b1fed12c3baac014be15fac67c6e815 company 2 create_time 1400882734 last_login 1487292301 last_ipaddr 112.2.21.12
+HMSET user.xzadmin name 周杰伦 password 10470c3b4b1fed12c3baac014be15fac67c6e815 company 2 create_time 1400882734 last_login 1487292301 last_ipaddr 112.2.21.12
+
+// agent
+HMSET agent.1001 name 王大锤 type 1 password 123456 callerid 1001 company 1 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.1002 name 王大锤 type 1 password 123456 callerid 1002 company 1 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.1003 name 王大锤 type 1 password 123456 callerid 1003 company 1 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.1004 name 王大锤 type 1 password 123456 callerid 1004 company 1 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.1005 name 王大锤 type 1 password 123456 callerid 1005 company 1 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.1006 name 王大锤 type 1 password 123456 callerid 1006 company 1 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.2001 name 王大锤 type 1 password 123456 callerid 2001 company 2 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.2002 name 王大锤 type 1 password 123456 callerid 2002 company 2 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.2003 name 王大锤 type 1 password 123456 callerid 2003 company 2 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.2004 name 王大锤 type 1 password 123456 callerid 2004 company 2 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.2005 name 王大锤 type 1 password 123456 callerid 2005 company 2 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.2006 name 王大锤 type 1 password 123456 callerid 2006 company 2 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+HMSET agent.2007 name 王大锤 type 1 password 123456 callerid 2007 company 2 icon 001.jpg status 1 last_login 1288763200 lats_ipaddr 112.2.21.12
+
+// sounds
+HMSET sound.1 name 4G手机 file wojf32wnf.wav duration 0 company 1 remark hello status 1 create_time 140128345 operator ccadmin ip_addr 112.2.21.12
+HMSET sound.2 name 4G手机 file wojf32wnf.wav duration 0 company 1 remark hello status 1 create_time 140128345 operator ccadmin ip_addr 112.2.21.12
+HMSET sound.3 name 4G手机 file wojf32wnf.wav duration 0 company 1 remark hello status 1 create_time 140128345 operator ccadmin ip_addr 112.2.21.12
+HMSET sound.4 name 4G手机 file wojf32wnf.wav duration 0 company 1 remark hello status 1 create_time 140128345 operator xzadmin ip_addr 112.2.21.12
+HMSET sound.5 name 4G手机 file wojf32wnf.wav duration 0 company 2 remark hello status 1 create_time 140128345 operator xzadmin ip_addr 112.2.21.12
+HMSET sound.6 name 4G手机 file wojf32wnf.wav duration 0 company 2 remark hello status 1 create_time 140128345 operator xzadmin ip_addr 112.2.21.12
+HMSET sound.7 name 4G手机 file wojf32wnf.wav duration 0 company 2 remark hello status 1 create_time 140128345 operator xzadmin ip_addr 112.2.21.12
+
+// product
+HMSET product.1 name 金立语音王 price 999.00 inventory 9999 remark hello company 1 create_time 1400283788
+HMSET product.2 name 金立语音王 price 999.00 inventory 9999 remark hello company 1 create_time 1400283788
+HMSET product.3 name 金立语音王 price 999.00 inventory 9999 remark hello company 1 create_time 1400283788
+HMSET product.4 name 金立语音王 price 999.00 inventory 9999 remark hello company 1 create_time 1400283788
+HMSET product.5 name 金立语音王 price 999.00 inventory 9999 remark hello company 1 create_time 1400283788
+

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      th {
+      text-align:center;
+      }
+      
+      td {
+      text-align:center;
+      }
+      .table .td-icon {
+      padding-left:15px;width:45px;
+      }
+      .table .td-unregister {
+      width:100px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="/status.php">状态监控</a></li>
+            <li><a href="/task.php">任务管理</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li><a href="/customer.php">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li><a href="/help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li><a id="account" href="/account.php"{if $alert === true} data-container="body" data-toggle="popover" data-placement="bottom" data-content="您的账户余额已不足"{/if}>我的账户</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container box">
+      <div>
+        <ol class="breadcrumb">
+          <li class="active">当前位置:</li>
+          <li><a href="agent.php">座席管理</a></li>
+          <li class="active">分机状态</li>
+        </ol>
+      </div>
+      <div>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="td-icon">#</th>
+              <th>分机号码</th>
+              <th>座席姓名</th>
+              <th>分机状态</th>
+              <th>客户端 IP 地址</th>
+              <th>端 口</th>
+              <th>客户端设备名称</th>
+              <th class="td-unregister">分机操作</th>
+            </tr>
+          </thead>
+          <tbody class="text-muted">
+            {if is_array($extens)}
+            {foreach $extens as $exten}
+            <tr>
+              <td class="td-icon"><span class="glyphicon glyphicon-phone-alt"></span> </td>
+              <td>{$exten['sip_user']}</td>
+              <td>{mb_substr($exten['name'], 0, 8, 'UTF-8')}</td>
+              <td class="text-success">
+                <span class="badge badge-{if $exten['ping_status'] == 'Reachable'}success{/if}{if $exten['ping_status'] == 'Unreachable'}default{/if}{if $exten['ping_status'] == 'unregister'}default{/if}">{if $exten['ping_status'] == 'Reachable'}已注册{/if}{if $exten['ping_status'] == 'Unreachable'}超 时{/if}{if $exten['ping_status'] == 'unregister'}未注册{/if}</span>
+              </td>
+              <td>{$exten['network_ip']}</td>
+              <td>{$exten['network_port']}</td>
+              <td>{$exten['user_agent']}</td>
+              <td class="td-unregister"><a href="#" class="btn btn-default btn-xs" disabled><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> 注 销</a></td>
+            </tr>
+            {/foreach}
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.new.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      .table .td-icon {
+      width:50px;
+      }
+      .table .td-date {
+      width:160px;
+      }
+      condensed>tfoot>tr>.td-edit {
+      text-align:right;
+      padding-right:55px;
+      }
+      .info {
+      padding:1px 5px;
+      font-size:10px;
+      color:#ffffff;
+      border-radius:8px;
+      }
+      .info-default {
+      background-color:#9de486;
+      }
+      .info-primary {
+      background-color:#a6c7B8;
+      }
+      .info-success {
+      background-color:#94dc94;
+      }
+      .info-warning {
+      background-color:#f1bb70;
+      }
+      .info-danger {
+      background-color:#e88987;
+      }
+      .breadcrumb>li+li:before {
+      content:no-open-quote;
+      padding: 0 5px;
+      color:#cccccc;
+      }
+      .navbar-inverse .badge {
+      color:#ffffff;
+      background-color:#f76e6a;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">控制面板</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="company.php">企业管理</a></li>
+            <li><a href="users.php">账号管理</a></li>
+            <li><a href="sounds.php">语音审核{if $alert_sound > 0} <span class="badge badge-danger">{$alert_sound}</span>{/if}</a></li>
+            <li><a href="service.php">服务管理</a></li>
+            <li><a href="status.php">服务器状态</a></li>
+            <li class="active"><a href="#">日志记录</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['uid']}</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container box">
+      <div>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="td-icon text-center">#</th>
+              <th>记录ID</th>
+              <th>操作者</th>
+              <th>IP地址</th>
+              <th>记录时间</th>
+              <th>日志记录内容</th>
+            </tr>
+          </thead>
+          <tbody class="text-muted">
+            <tr>
+              <td class="text-center"><span class="glyphicon glyphicon-ok-sign"></span></td>
+              <td>1</td>
+              <td>ky325688</td>
+              <td>112.2.21.6</td>
+              <td>2015-12-25 08:30:00</td>
+              <td>admin@jato.com 删除账户 admin@yucai.com 成功.</td>
+            </tr>
+            <tr>
+              <td class="text-center"><span class="glyphicon glyphicon-ok-sign"></span></td>
+              <td>1</td>
+              <td>ky325688</td>
+              <td>112.2.21.6</td>
+              <td>2015-12-25 08:30:00</td>
+              <td>admin@jato.com 删除账户 admin@yucai.com 成功.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="refresh" content="4">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      th {
+      text-align:center;
+      }
+      td {
+      text-align:center;
+      }
+      .table .td-icon {
+      padding-left:15px;
+      width:45px;
+      }
+      .table .td-dev {
+      text-align:right;
+      padding-right:20px;
+      }
+      condensed>tfoot>tr>.td-edit {
+      text-align:right;
+      padding-right:55px;
+      }
+      .info {
+      padding:1px 5px;
+      font-size:10px;
+      color:#ffffff;
+      border-radius:8px;
+      }
+      .info-default {
+      background-color:#9de486;
+      }
+      .info-primary {
+      background-color:#a6c7B8;
+      }
+      .info-success {
+      background-color:#94dc94;
+      }
+      .info-warning {
+      background-color:#f1bb70;
+      }
+      .info-danger {
+      background-color:#e88987;
+      }
+      .text-success {
+      font-weight:bold;
+      }
+      .breadcrumb>li+li:before {
+      content:no-open-quote;
+      padding: 0 5px;color:#cccccc;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">状态监控</a></li>
+            <li><a href="/task.php">任务管理</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li><a href="/customer.php">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li><a href="/help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li><a id="account" href="/account.php"{if $alert === true} data-container="body" data-toggle="popover" data-placement="bottom" data-content="您的账户余额已不足"{/if}>我的账户</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container box">
+      <div>
+        <ol class="breadcrumb">
+          <li>当前任务: <span class="info info-default">{mb_substr($task['name'], 0, 8, 'UTF-8')}</span></li>
+          <li>任务类型: <span class="info info-primary">{if $task['type'] === 0}未 知{/if}{if $task['type'] === 1}群呼转座席(自动){/if}{if $task['type'] === 2}群呼转座席(固定){/if}{if $task['type'] === 3}手动批量外呼{/if}{if $task['type'] === 4}语音群呼广告{/if}</span></li>
+          <li>完成进度: <span class="info info-primary">{$task['completion_rate']}%</span></li>
+          <li>登录座席: <span class="info info-success">{$online}</span></li>
+          <li>正在通话: <span class="info info-primary">{$talking}</span></li>
+          <li>正听语音: <span class="info info-primary">{$playback}</span></li>
+          <li>当前并发: <span class="info info-danger">{$call_concurrent}</span></li>
+          <li class="pull-right" style="color:#555555"><span class="glyphicon glyphicon-time"></span> {date('Y-m-d', time())}</li>
+        </ol>
+      </div>
+      <div>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="td-icon">#</th>
+              <th>座席分机</th>
+              <th>座席姓名</th>
+              <th>座席状态</th>
+              <th>通话状态</th>
+              <th>总接听数</th>
+              <th>漏接电话</th>
+              <th>总通话时长</th>
+              <th class="td-dev">最后一次通话时间</th>
+            </tr>
+          </thead>
+          <tbody class="text-muted">
+            {if is_array($queue)}
+            {foreach $queue as $agent}
+            <tr>
+              <td class="td-icon"><img src="/img/{$agent['agent_icon']}" class="img-circle icon" alt="image"></td>
+              <td>{$agent['name']}</td>
+              <td>{mb_substr($agent['agent_name'], 0, 5, 'UTF-8')}</td>
+              <td class="text-success"><span class="badge badge-{if $agent['status'] === 'Logged Out'}default{/if}{if $agent['status'] === 'Available'}success{/if}{if $agent['status'] === 'Available (On Demand)'}default{/if}{if $agent['status'] === 'On Break'}danger{/if}"{if $agent['status'] === 'On Break'} data-container="body" data-toggle="popover" data-placement="top" data-content="该座席超过 24 次漏接客户电话,严重影响系统进线,系统已经将该座席暂停!"{/if}>{if $agent['status'] === 'Logged Out'}未登录{/if}{if $agent['status'] === 'Available'}已登录{/if}{if $agent['status'] === 'On Break'}打酱油{/if}</span></td>
+              <td class="text-success"><span class="badge badge-{if $agent['state'] === 'Waiting'}default{/if}{if $agent['state'] === 'Idle'}warning{/if}{if $agent['state'] === 'In a queue call'}success{/if}">{if $agent['state'] === 'Idle'}暂停中{/if}{if $agent['state'] === 'Waiting'}等待中{/if}{if $agent['state'] === 'Receiving'}振 &nbsp铃{/if}{if $agent['state'] === 'In a queue call'}通话中{/if}</span></td>
+              <td>{$agent['calls_answered']}</td>
+              <td><span{if $agent['no_answer_count'] > 0} class="badge badge-danger"{/if}>{$agent['no_answer_count']}</span></td>
+              <td>{$agent['talk_time']}</td>
+              <td class="td-dev">{$agent['last_bridge_start']}</td>
+            </tr>
+            {/foreach}
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+    <script type="text/javascript">
+      $(function () {
+      $('[data-toggle="popover"]').popover('show');
+      })
+    </script>
+  </body>
+</html>

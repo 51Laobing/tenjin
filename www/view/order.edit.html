@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>添加订单</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      .table>tbody>tr>td {
+      line-height: 25px;
+      }
+
+      .table .td-name, .table .td-product, .table .td-phone, .table .td-telephone, .table .td-number, .table .td-address, .table .td-remark, .table .td-submit-help {
+      width:80px;
+      }
+      .text-reason {
+      width:250px;
+      }
+    </style>
+  </head>
+  <body style="min-width:650px;padding-bottom:0px">
+    <div style="padding: 10px 45px 15px 45px">
+      <form action="edit.php" method="post">
+        <input type="hidden" name="sub" value="ok">
+        <input type="hidden" name="id" value="{$order['id']}">
+        <table class="table table-condensed table-striped" style="width:700px">
+          <tr>
+            <td class="td-name">客户姓名:</td>
+            <td class="td-name-input">
+              <input type="text" class="form-control input-sm" name="name" value="{$order['name']}" />
+            </td>
+            <td class="td-phone">下单座席:</td>
+            <td class="td-phone-input"><input type="text" class="form-control input-sm" name="creator" value="{$creator['name']} ({$creator['uid']})" disabled></td>
+          </tr>
+          <tr>
+            <td class="td-phone">手机号码:</td>
+            <td class="td-phone-input"><input type="text" class="form-control input-sm" name="phone" value="{$order['phone']}"></td>
+            <td class="td-product">商品名称:</td>
+            <td class="td-product-input" colspan="2">
+              <select class="form-control input-sm" name="product">
+                {if is_array($products)}
+                {foreach $products as $product}
+                <option value="{$product['id']}"{if $order['product'] === $product['id']} selected="selected"{/if}>{$product['name']}({intval($product['price'])})</option>
+                {/foreach}
+                {/if}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="td-telephone">固定电话:</td>
+            <td class="td-telephone-input"><input type="text" class="form-control input-sm" name="telephone" value="{$order['telephone']}"></td>
+            <td class="td-number">商品数量:</td><td class="td-number-input"><input type="number" class="form-control input-sm" name="number" value="{$order['number']}"></td>
+          </tr>
+          <tr>
+            <td class="td-address">收货地址:</td>
+            <td colspan="3"><input type="text" class="form-control input-sm" name="address" value="{$order['address']}"></td>
+          </tr>
+          <tr>
+            <td class="td-remark">备注信息:</td>
+            <td colspan="3"><input type="text" class="form-control input-sm" name="comment" value="{$order['comment']}"></td>
+          </tr>
+          <tr>
+            <td class="td-remark" style="padding-top:20px">通话录音:</td>
+            <td colspan="3" style="padding-top:20px"><audio src="/record/{$record}" preload="metadata" controls="controls" style="width:610px">您的浏览器不支持录音试听</audio></td>
+          </tr>
+        </table>
+        <div>
+          <table class="table" style="width:700px">
+            <tr>
+              <td class="td-submit-help">订单状态: </td>
+              <td class="text-left" style="width:110px">
+                <select class="form-control input-sm" name="status" style="width:100px">
+                  <option value="1"{if $order['status'] === 1} selected="selected"{/if}>待审核</option>
+                  <option value="2"{if $order['status'] === 2} selected="selected"{/if}>已通过</option>
+                  <option value="3"{if $order['status'] === 3} selected="selected"{/if}>不通过</option>
+                  <option value="4"{if $order['status'] === 4} selected="selected"{/if}>已发货</option>
+                  <option value="5"{if $order['status'] === 5} selected="selected"{/if}>待 &nbsp&nbsp定</option>
+                </select>
+              </td>
+              <td class="td-remark">审核备注:</td>
+              <td><input type="text" class="form-control input-sm text-reason" placeholder="如果订单不通过请在这里填写原因" name="reason" value="{$order['reason']}"></td>
+              <td class="text-right" style="margin-top:10px"><button type="submit" class="btn btn-success btn-sm">保存修改</button></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

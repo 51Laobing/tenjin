@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      .jumbotron {
+      background-color:#FBFBFB;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="/status.php">状态监控</a></li>
+            <li><a href="/task.php">任务管理</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li><a href="/customer.php">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li><a href="help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li class="active"><a href="#">我的账户</a></li>
+            <li><a href="logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="jumbotron">
+        <div>
+          <ul class="list-inline text-muted">
+            <li><b>公司名称:</b> {$company['name']} <img src="img/{if $company['level'] == 1}level_1.gif{/if}{if $company['level'] == 2}level_2.gif{/if}{if $company['level'] == 3}level_3.gif{/if}"></li>
+            <li><b>企业ID：</b> {$company['id']}</li>
+            <li><b>开户时间:</b> {$company['create_time']}</li>
+          </ul>
+        </div>
+        <hr />
+        <div>
+          <ul class="list-inline text-success">
+            <li><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> <b>账户余额:</b> <span class="badge badge-success">{$account['money']}</span></li>
+            <li><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> <b>透支额度:</b> <span class="badge badge-info">{$account['limitmoney']}</span></li>
+            <li><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> <b>今日消费:</b> <span class="badge badge-danger">{$account['todayconsumption']}</span></li>
+          </ul>
+        </div>
+        <br />
+        <div>
+          <ul class="list-inline text-muted">
+            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 座席总数: {$agents}</li>
+          </ul>
+        </div>
+        <div>
+          <ul class="list-inline text-muted">
+            <li><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> 线路并发: {$company['concurrent']}</li>
+          </ul>
+        </div>
+        <div>
+          <ul class="list-unstyled text-muted">
+            <li><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 技术顾问: 徐先生</li>
+          </ul>
+        </div>
+        <div>
+          <ul class="list-unstyled text-muted">
+            <li><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> 联系 QQ: 2403378726</li>
+          </ul>
+        </div>
+        <div>
+          <ul class="list-unstyled text-muted">
+            <li><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> 联系电话: 15021553368</li>
+          </ul>
+        </div>
+        <br />
+        <div>
+          <p class="text-left text-muted" style="font-size:13px">Copyright © 2015 Jatogroup Inc. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+  </body>
+</html>

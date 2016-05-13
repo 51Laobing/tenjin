@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      hr {
+      margin-top:10px;margin-bottom:10px;
+      }
+      th {
+      text-align:center;
+      }
+      td {
+      text-align:center;
+      }
+      .table .td-id {
+      text-align:left;padding-left:15px;
+      }
+      audio {
+      width: 240px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="/status.php">状态监控</a></li>
+            <li><a href="/task.php">任务管理</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li><a href="/customer.php">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li><a href="/help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li><a id="account" href="/account.php"{if $alert === true} data-container="body" data-toggle="popover" data-placement="bottom" data-content="您的账户余额已不足"{/if}>我的账户</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container box">
+      <div class="query">
+        <form class="form-inline" action="order.php" role="form">
+          <input type="hidden" name="sub" value="ok">
+          <div class="form-group">
+            <select class="input-sm" name="datetype" style="width:95px;background-color:#fcfcfc;font-weight:bold;border:1px;border-bottom-style:none;border-top-style:none;border-left-style:none;border-right-style:none">
+              <option value="1"{if $where['datetype'] === 1} selected="selected"{/if}>下单时间</option>
+              <option value="2"{if $where['datetype'] === 2} selected="selected"{/if}>审核时间</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input id="start" type="text" class="form-control input-sm" style="width:148px" name="start" value="{$where['start']}" />
+          </div>
+          <div class="form-group">
+            <label> - </label>
+            <input id="end" type="text" class="form-control input-sm" style="width:148px" name="end" value="{$where['end']}" />
+          </div>
+          <div class="form-group" style="margin-left:6px">
+            <label>状 态: </label>
+            <select class="form-control input-sm" name="status" style="width:85px">
+              <option value="0"{if $where['status'] === false} selected="selected"{/if}>全 部</option>
+              <option value="1"{if $where['status'] === 1} selected="selected"{/if}>待审核</option>
+              <option value="2"{if $where['status'] === 2} selected="selected"{/if}>已通过</option>
+              <option value="3"{if $where['status'] === 3} selected="selected"{/if}>不通过</option>
+              <option value="4"{if $where['status'] === 4} selected="selected"{/if}>已发货</option>
+              <option value="5"{if $where['status'] === 5} selected="selected"{/if}>待 &nbsp&nbsp定</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-left:6px">
+            <label>座 席: </label>
+            <select class="form-control input-sm" name="creator" style="width:85px">
+              <option value="0"{if $where['creator'] === false} selected="selected"{/if}>全 部</option>
+              {if is_array($agents)}
+              {foreach $agents as $agent}
+              <option value="{$agent['uid']}"{if $where['creator'] === $agent['uid']} selected="selected"{/if}>{$agent['name']}</option>
+              {/foreach}
+              {/if}
+            </select>
+          </div>
+          <div class="form-group" style="margin-left:6px">
+            <label>订单编号: </label>
+            <input type="text" class="form-control input-sm" name="orderid" style="width:80px;color:#666;font-size:13px;font-weight:bold" value="{$where['id']}">
+          </div>
+          <div class="form-group" style="margin-left:18px">
+            <input type="checkbox" name="export" data-toggle="tooltip" data-placement="top" title="导出到 Execl 文件" {if $where['export'] === true}checked="checked"{/if}>
+          </div>
+          <button id="query" type="submit" class="btn btn-success btn-sm" style="margin-left:12px;width:55px">查 询</button>
+        </form>
+      </div>
+      <hr />
+      <div>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="td-id">订单编号</th>
+              <th>客户姓名</th>
+              <th>手机号码</th>
+              <th>商品名称(价格)</th>
+              <th>数 量</th>
+              <th>订单状态</th>
+              <th>下单座席</th>
+              <th>质检员</th>
+              <th>审核时间</th>
+              <th>下单时间</th>
+              <th>编 辑</th>
+            </tr>
+          </thead>
+          <tbody class="text-muted">
+            {if is_array($orders)}
+            {foreach $orders as $order}
+            <tr>
+              <td>{$order['id']}</td>
+              <td>{mb_substr($order['name'], 0, 4, 'UTF-8')}</td>
+              <td>{mb_substr($order['phone'], 0, 11, 'UTF-8')}</td>
+              <td>{mb_substr($products[$order['product']]['name'], 0, 5, 'UTF-8')}({intval($products[$order['product']]['price'])})</td>
+              <td>{$order['number']}</td>
+              <td><span class="badge badge-{if $order['status'] === 1}default{/if}{if $order['status'] === 2}success{/if}{if $order['status'] === 3}danger{/if}{if $order['status'] === 4}info{/if}{if $order['status'] === 5}warning{/if}">{if $order['status'] === 1}待审核{/if}{if $order['status'] === 2}已通过{/if}{if $order['status'] === 3}不通过{/if}{if $order['status'] === 4}已发货{/if}{if $order['status'] === 5}待 &nbsp&nbsp定{/if}</span></td>
+              <td>{$order['creator']}</td>
+              <td>{$order['quality']}</td>
+              <td>{mb_substr($order['quality_time'], 0, 16, 'UTF-8')}</td>
+              <td>{mb_substr($order['create_time'], 0, 16, 'UTF-8')}</td>
+              <td><a href="javascript:the_edit_order({$order['id']})"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
+            </tr>
+            {/foreach}
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+    <script type="text/javascript" src="/js/layer.js"></script>
+    <script type="text/javascript" src="/js/order.js"></script>
+    <script type="text/javascript">
+      $('#start').datetimepicker({
+      format: 'yyyy-mm-dd hh:ii:ss',
+      language: 'zh-CN',
+      autoclose: true
+      });
+      $('#end').datetimepicker({
+      format: 'yyyy-mm-dd hh:ii:ss',
+      language: 'zh-CN',
+      autoclose: true
+      });
+
+      $(function () {
+      $('[data-toggle="popover"]').popover({
+      html: true
+      });
+      })
+
+      $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script>
+  </body>
+</html>

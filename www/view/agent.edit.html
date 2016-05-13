@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <link rel="stylesheet" type="text/css" href="/css/dd.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="/status.php">状态监控</a></li>
+            <li><a href="/task.php">任务管理</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li><a href="/customer.php">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li><a href="/help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li><a id="account" href="/account.php"{if $alert === true} data-container="body" data-toggle="popover" data-placement="bottom" data-content="您的账户余额已不足"{/if}>我的账户</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container box">
+      <div>
+        <ol class="breadcrumb">
+          <li class="active">当前位置:</li>
+          <li><a href="#">座席管理</a></li>
+          <li class="active">座席编辑</li>
+        </ol>
+      </div>
+      <div>
+        <form class="form-horizontal" action="edit.php" method="post">
+          <div class="form-group">
+            <label class="control-label col-sm-4">座席账号: </label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control input-sm" style="font-weight:bold" value="{$agent['uid']}" disabled>
+              <input type="hidden" name="uid" value="{$agent['uid']}"/>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">座席账号, 不可修改</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">座席头像: </label>
+            <div class="col-sm-3">
+              <select id="icon" class="form-control input-sm" name="icon">
+                <option data-image="/img/001.png" value="001.jpg"{if $agent['icon'] == '001.jpg'} selected="selected"{/if}> Fern </option>
+                <option data-image="/img/002.png" value="002.jpg"{if $agent['icon'] == '002.jpg'} selected="selected"{/if}> Alice </option>
+                <option data-image="/img/003.png" value="003.jpg"{if $agent['icon'] == '003.jpg'} selected="selected"{/if}> Bunny </option>
+                <option data-image="/img/004.png" value="004.jpg"{if $agent['icon'] == '004.jpg'} selected="selected"{/if}> Belle </option>
+                <option data-image="/img/005.png" value="005.jpg"{if $agent['icon'] == '005.jpg'} selected="selected"{/if}> Estelle </option>
+                <option data-image="/img/006.png" value="006.jpg"{if $agent['icon'] == '006.jpg'} selected="selected"{/if}> Jasmine </option>
+                <option data-image="/img/007.png" value="007.jpg"{if $agent['icon'] == '007.jpg'} selected="selected"{/if}> Iris </option>
+                <option data-image="/img/008.png" value="008.jpg"{if $agent['icon'] == '008.jpg'} selected="selected"{/if}> Emily </option>
+                <option data-image="/img/009.png" value="009.jpg"{if $agent['icon'] == '009.jpg'} selected="selected"{/if}> Ailsa </option>
+                <option data-image="/img/010.png" value="010.jpg"{if $agent['icon'] == '010.jpg'} selected="selected"{/if}> Beatrice </option>
+                <option data-image="/img/011.png" value="011.jpg"{if $agent['icon'] == '011.jpg'} selected="selected"{/if}> Carrie </option>
+                <option data-image="/img/012.png" value="012.jpg"{if $agent['icon'] == '012.jpg'} selected="selected"{/if}> Allison </option>
+                <option data-image="/img/013.png" value="013.jpg"{if $agent['icon'] == '013.jpg'} selected="selected"{/if}> Leey </option>
+                <option data-image="/img/014.png" value="014.jpg"{if $agent['icon'] == '014.jpg'} selected="selected"{/if}> Jin </option>
+                <option data-image="/img/100.png" value="100.jpg"{if $agent['icon'] == '100.jpg'} selected="selected"{/if}> Carina </option>
+                <option data-image="/img/101.png" value="101.jpg"{if $agent['icon'] == '101.jpg'} selected="selected"{/if}> Cheryl </option>
+                <option data-image="/img/102.png" value="102.jpg"{if $agent['icon'] == '102.jpg'} selected="selected"{/if}> Debra </option>
+                <option data-image="/img/103.png" value="103.jpg"{if $agent['icon'] == '103.jpg'} selected="selected"{/if}> Edith </option>
+                <option data-image="/img/104.png" value="104.jpg"{if $agent['icon'] == '104.jpg'} selected="selected"{/if}> Gloria </option>
+                <option data-image="/img/105.png" value="105.jpg"{if $agent['icon'] == '105.jpg'} selected="selected"{/if}> Hannah </option>
+                <option data-image="/img/106.png" value="106.jpg"{if $agent['icon'] == '106.jpg'} selected="selected"{/if}> Ishara </option>
+                <option data-image="/img/107.png" value="107.jpg"{if $agent['icon'] == '107.jpg'} selected="selected"{/if}> Janet </option>
+                <option data-image="/img/108.png" value="108.jpg"{if $agent['icon'] == '108.jpg'} selected="selected"{/if}> Lareina </option>
+                <option data-image="/img/109.png" value="109.jpg"{if $agent['icon'] == '109.jpg'} selected="selected"{/if}> Vivian </option>
+                <option data-image="/img/110.png" value="110.jpg"{if $agent['icon'] == '110.jpg'} selected="selected"{/if}> Bubles  </option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">座席用户头像</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">座席姓名: </label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control input-sm" name="name" value="{$agent['name']}">
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">座席真实姓名</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">座席密码: </label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control input-sm" style="color:red;font-weight:bold" name="password" value="{$agent['password']}">
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">座席登录密码</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">外显号码: </label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control input-sm" name="callerid" value="{$agent['callerid']}">
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">座席外呼外显号码</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">其他设置: </label>
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" checked="checked"> 允许外呼
+              </label>
+              <label style="margin-left:15px">
+                <input type="checkbox" checked="checked"> 允许网页登录
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-3 col-sm-offset-4">
+              <button type="submit" class="btn btn-success" style="width:80px">确 定</button>
+              <a class="btn btn-default" href="../agent.php" style="margin-left:20px;width:80px">取 消</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.dd.min.js"></script>
+    <script type="text/javascript" src="/js/typing.js"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+    <script type="text/javascript">
+      $("#icon").msDropdown().data("dd");
+    </script>
+  </body>
+</html>

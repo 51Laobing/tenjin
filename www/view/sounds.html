@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      th {
+      text-align:center;
+      }
+      td {
+      text-align:center;
+      }
+      .table .td-icon {
+      width:50px;
+      }
+      .table .td-edit {
+      text-align:right;
+      padding-right:20px;
+      }
+      audio {
+      width: 240px;
+      }
+      .breadcrumb>.pull-right:before {
+      content:"";
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="/status.php">状态监控</a></li>
+            <li><a href="/task.php">任务管理</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li><a href="/customer.php">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li><a href="/help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li><a id="account" href="/account.php"{if $alert === true} data-container="body" data-toggle="popover" data-placement="bottom" data-content="您的账户余额已不足"{/if}>我的账户</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container box">
+      <div>
+        <ol class="breadcrumb">
+          <li class="active">当前位置:</li>
+          <li><a href="#">项目管理</a></li>
+          <li class="active">语音管理</li>
+          <li class="pull-right" style="list-style-type:none" data-toggle="modal" data-target="#myModal"><a class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> 上传语音</a></li>
+        </ol>
+      </div>
+      <div>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="td-icon">#</th>
+              <th>语音编号</th>
+              <th>语音名称</th>
+              <th>备注信息</th>
+              <th>上传时间</th>
+              <th>审核状态</th>
+              <th>语音试听</th>
+              <th class="td-edit">删除操作</th>
+            </tr>
+          </thead>
+          <tbody class="text-muted">
+            {if is_array($sounds)}
+            {foreach $sounds as $sound}
+            <tr>
+              <td class="td-icon"><span class="glyphicon glyphicon-music"></span> </td>
+              <td>{$sound['id']}</td>
+              <td class="text-muted">{mb_substr($sound['name'], 0, 10, 'UTF-8')}</td>
+              <td>{mb_substr($sound['remark'], 0, 15, 'UTF-8')}</td>
+              <td>{$sound['create_time']}</td>
+              <td><span class="badge badge-{if $sound['status'] === 1}success{/if}{if $sound['status'] === 0}warning{/if}{if $sound['status'] === -1}danger{/if}">{if $sound['status'] === 1}已通过{/if}{if $sound['status'] === 0}待审核{/if}{if $sound['status'] === -1}不通过{/if}</span></td>
+              <td><a href="javascript:;" style="color:#337ab7" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="<audio src='/sounds/{$sound['file']}' autoplay='autoplay' preload='metadata' controls='controls'>您的浏览器不支持录音试听</audio>"><span class="glyphicon glyphicon-headphones"></span> 试 听</a></td>
+              <td class="td-edit"><a class="btn btn-default btn-xs" href="javascript:remove({$sound['id']})"><span class="glyphicon glyphicon-trash"></span> 删 除</a></td>
+            </tr>
+            {/foreach}
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">语音上传</h4>
+          </div>
+          <form class="form-horizontal" action="sounds.php" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+              <div id="header" class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1">语音名称: </label>
+                <div class="col-sm-5 form">
+                  <input type="text" class="form-control input-sm input_key" style="font-weight:bold" name="name">
+                </div>
+                <div class="col-sm-4">
+                  <p class="help-block">* 语音名称</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1">语音文件: </label>
+                <div class="col-sm-5">
+                  <input type="file" class="form-control input-sm" name="file" accept="audio/x-wav"/>
+                </div>
+                <div class="col-sm-4">
+                  <p class="help-block">* 语音文件</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1">备注信息: </label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control input-sm" name="remark">
+                </div>
+                <div class="col-sm-4">
+                  <p class="help-block">* 语音备注信息</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1">语音说明:  </label>
+                <div class="checkbox col-sm-8" style="color:#999999">
+                  语音文件必须是16位,8000Hz,单声道wav格式的音频文件
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <center>
+                <input type="hidden" name="action" value="new">
+                <button type="submit" class="btn btn-primary">确认上传</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+              </center>
+            </div>
+          </form>
+        </div>
+      </div>
+      <script type="text/javascript" src="/js/jquery.min.js"></script>
+      <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="/js/layer.js"></script>
+      <script type="text/javascript" src="/js/typing.js"></script>
+      <script type="text/javascript" src="/js/extend.js"></script>
+      <script type="text/javascript" src="/js/sounds.js"></script>
+      <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="popover"]').popover({
+                html: true
+            });
+        })
+      </script>
+  </body>
+</html>

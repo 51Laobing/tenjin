@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">呼叫中心</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+            <li><a href="/status.php">状态监控</a></li>
+            <li class="active"><a href="/task.php">任务管理</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">座席管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/agent.php">座席管理</a></li>
+                <li><a href="/exten.php">分机状态</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目管理</a>
+              <ul class="dropdown-menu">
+                <li><a href="/order.php">订单管理</a></li>
+                <li><a href="/customer.php">客户资料管理</a></li>
+                <li><a href="/product.php">商品管理</a></li>
+                <li><a href="/sounds.php">语音管理</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">通话记录</a>
+              <ul class="dropdown-menu">
+                <li><a href="/cdr.php">通话记录查询</a></li>
+                <li><a href="/report.php">通话数据报表</a></li>
+              </ul>
+            </li>
+            <li><a href="/help.php">帮助文档</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['name']}</a></li>
+            <li><a id="account" href="/account.php"{if $alert === true} data-container="body" data-toggle="popover" data-placement="bottom" data-content="您的账户余额已不足"{/if}>我的账户</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container box">
+      <div>
+        <ol class="breadcrumb">
+          <li class="active">当前位置:</li>
+          <li><a href="../task.php">任务管理</a></li>
+          <li class="active">任务编辑</li>
+        </ol>
+      </div>
+      <div>
+        <form class="form-horizontal" action="edit.php" method="post">
+          {if $task['type'] === 1}
+          <!-- 群呼转座席(自动模式) -->
+          <div class="form-group">
+            <label class="control-label col-sm-4">任务名称: </label>
+            <div class="col-sm-3">
+              <input type="hidden" name="id" value="{$task['id']}">
+              <input type="text" class="form-control input-sm" style="font-weight:bold" name="name" value="{$task['name']}" />
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务名称</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">任务类型: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" disabled>
+                <option value="1"{if $task['type'] === 1} selected="selected"{/if}>群呼转座席(自动)</option>
+                <option value="2"{if $task['type'] === 2} selected="selected"{/if}>群呼转座席(固定)</option>
+                <option value="3"{if $task['type'] === 3} selected="selected"{/if}>手动批量外呼</option>
+                <option value="4"{if $task['type'] === 4} selected="selected"{/if}>语音群呼广告</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务类型</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">业务模板: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" name="business">
+                <option value="1"{if $task['business'] === 1} selected="selected"{/if}>订单模板</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定业务模板</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">拨号比例: </label>
+            <div class="col-sm-3">
+              <input type="number" class="form-control input-sm" style="font-weight:bold" name="dial" value="{$task['dial']}" onchange="check_dial(this)" />
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">设置默认拨号比例,范围 1 - 24</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">语音文件: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" name="sound">
+                {if is_array($sounds)}
+                {foreach $sounds as $sound}
+                <option value="{$sound['id']}"{if $task['sound'] === $sound['id']} selected="selected"{/if}>{$sound['name']}</option>
+                {/foreach}
+                {/if}
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务语音</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">语音功能设置: </label>
+            <div class="checkbox col-sm-3">
+              <label>
+                <input type="checkbox" name="play"{if $task['play'] === 1} checked="checked"{/if}> 开启语音
+              </label>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">如果开启语音必须选择语音文件</p>
+            </div>
+          </div>
+          <!-- 群呼转座席(自动模式) -->
+          {/if}
+          {if $task['type'] === 2}
+          <!-- 群呼转座席(固定模式) -->
+          <div class="form-group">
+            <label class="control-label col-sm-4">任务名称: </label>
+            <div class="col-sm-3">
+              <input type="hidden" name="id" value="{$task['id']}">
+              <input type="text" class="form-control input-sm" style="font-weight:bold" name="name" value="{$task['name']}" />
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务名称</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">任务类型: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" disabled>
+                <option value="1"{if $task['type'] === 1} selected="selected"{/if}>群呼转座席(自动模式)</option>
+                <option value="2"{if $task['type'] === 2} selected="selected"{/if}>群呼转座席(固定模式)</option>
+                <option value="3"{if $task['type'] === 3} selected="selected"{/if}>手动批量外呼</option>
+                <option value="4"{if $task['type'] === 4} selected="selected"{/if}>语音群呼广告</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务类型</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">业务模板: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" name="business">
+                <option value="1"{if $task['business'] === 1} selected="selected"{/if}>订单模板</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定业务模板</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">固定并发: </label>
+            <div class="col-sm-3">
+              <input type="number" class="form-control input-sm" style="font-weight:bold" name="dial" value="{$task['dial']}" />
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">设置默认拨号固定并发数</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">语音文件: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" name="sound">
+                {if is_array($sounds)}
+                {foreach $sounds as $sound}
+                <option value="{$sound['id']}"{if $task['sound'] === $sound['id']} selected="selected"{/if}>{$sound['name']}</option>
+                {/foreach}
+                {/if}
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务语音</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">语音功能设置: </label>
+            <div class="checkbox col-sm-3">
+              <label>
+                <input type="checkbox" name="play"{if $task['play'] === 1} checked="checked"{/if}> 开启语音
+              </label>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">如果开启语音必须选择语音文件</p>
+            </div>
+          </div>
+          <!-- 群呼转座席(固定模式)-->
+          {/if}
+          {if $task['type'] === 3}
+          <!-- 手动批量外呼 -->
+          <div class="form-group">
+            <label class="control-label col-sm-4">任务名称: </label>
+            <div class="col-sm-3">
+              <input type="hidden" name="id" value="{$task['id']}">
+              <input type="text" class="form-control input-sm" style="font-weight:bold" name="name" value="{$task['name']}" />
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务名称</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">任务类型: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" disabled>
+                <option value="1"{if $task['type'] === 1} selected="selected"{/if}>群呼转座席(自动模式)</option>
+                <option value="2"{if $task['type'] === 2} selected="selected"{/if}>群呼转座席(固定模式)</option>
+                <option value="3"{if $task['type'] === 3} selected="selected"{/if}>手动批量外呼</option>
+                <option value="4"{if $task['type'] === 4} selected="selected"{/if}>语音群呼广告</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务类型</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">业务模板: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" name="business">
+                <option value="1"{if $task['business'] === 1} selected="selected"{/if}>订单模板</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定业务模板</p>
+            </div>
+          </div>
+          <!-- 手动批量外呼 -->
+          {/if}
+
+          {if $task['type'] === 4}
+          <!-- 语音群呼广告 -->
+          <div class="form-group">
+            <label class="control-label col-sm-4">任务名称: </label>
+            <div class="col-sm-3">
+              <input type="hidden" name="id" value="{$task['id']}">
+              <input type="text" class="form-control input-sm" style="font-weight:bold" name="name" value="{$task['name']}"/>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务名称</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">任务类型: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" disabled>
+                <option value="1"{if $task['type'] === 1} selected="selected"{/if}>群呼转座席(自动)</option>
+                <option value="2"{if $task['type'] === 2} selected="selected"{/if}>群呼转座席(固定)</option>
+                <option value="3"{if $task['type'] === 3} selected="selected"{/if}>手动批量外呼</option>
+                <option value="4"{if $task['type'] === 4} selected="selected"{/if}>语音群呼广告</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务类型</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">语音文件: </label>
+            <div class="col-sm-3">
+              <select class="form-control input-sm" name="sound">
+                {if is_array($sounds)}
+                {foreach $sounds as $sound}
+                <option value="{$sound['id']}"{if $task['sound'] === $sound['id']} selected="selected"{/if}>{$sound['name']}</option>
+                {/foreach}
+                {/if}
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">指定任务语音</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">按键设置: </label>
+            <div class="checkbox col-sm-3">
+              <label>
+                <input type="checkbox" name="presskey"{if $task['presskey'] === 1} checked="checked"{/if}> 开启按键
+              </label>
+            </div>
+            <div class="col-sm-3">
+              <p class="help-block">如果需要获取按键按选择此项</p>
+            </div>
+          </div>
+          <!-- 语音群呼广告 -->
+          {/if}
+          <div class="form-group">
+            <div class="col-sm-3 col-sm-offset-4">
+              <button type="submit" class="btn btn-success" style="width:80px">保存修改</button>
+              <a class="btn btn-default" style="margin-left:20px;width:80px" href="/task.php">取 消</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/extend.js"></script>
+    <script type="text/javascript">
+      function check_dial(obj){
+          var min = 1;
+          var max = 24;
+          if(parseInt(obj.value) < min || parseInt(obj.value) > max) {
+              alert('拨号比例值必须是 1 到 24 之间!');
+              obj.value='8';
+          }
+      }
+    </script>
+  </body>
+</html>

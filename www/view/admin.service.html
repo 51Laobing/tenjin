@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.new.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      th {
+      text-align:center;
+      }
+      td {
+      text-align:center;
+      }
+      .table .td-icon {
+      width:50px;
+      }
+      condensed>tfoot>tr>.td-edit {
+      text-align:right;
+      padding-right:55px;
+      }
+      .info {
+      padding:1px 5px;
+      font-size:10px;
+      color:#ffffff;
+      border-radius:8px;
+      }
+      .info-default {
+      background-color:#9de486;
+      }
+      .info-primary {
+      background-color:#a6c7B8;
+      }
+      .info-success {
+      background-color:#94dc94;
+      }
+      .info-warning {
+      background-color:#f1bb70;
+      }
+      .info-danger {
+      background-color:#e88987;
+      }
+      .text-success {
+      font-weight:bold;
+      }
+      .breadcrumb>li+li:before {
+      content:no-open-quote;
+      padding: 0 5px;
+      color:#cccccc;
+      }
+      .navbar-inverse .badge {
+      color:#ffffff;
+      background-color:#f76e6a;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">控制面板</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li><a href="company.php">企业管理</a></li>
+            <li><a href="users.php">账号管理</a></li>
+            <li><a href="sounds.php">语音审核{if $alert_sound > 0} <span class="badge badge-danger">{$alert_sound}</span>{/if}</a></li>
+            <li class="active"><a href="#">服务管理</a></li>
+            <li><a href="status.php">服务器状态</a></li>
+            <li><a href="logs.php">日志记录</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['uid']}</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container box">
+      <div>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="td-icon text-center">#</th>
+              <th>企业编号</th>
+              <th>公司名称</th>
+              <th>当前并发</th>
+              <th>进程PID</th>
+              <th>服务状态</th>
+              <th>创建时间</th>
+              <th class="td-edit">服务操作</th>
+            </tr>
+          </thead>
+          <tbody class="text-muted">
+            {if is_array($services)}
+            {foreach $services as $service}
+            <tr>
+              <td><span class="glyphicon glyphicon-globe"></span></td>
+              <td>{$service['id']}</td>
+              <td>{$service['name']}</td>
+              <td>{$service['curr_concurrent']}</td>
+              <td>{$service['pid']}</td>
+              <td><span class="badge badge-{if $service['status'] === 0}default{/if}{if $service['status'] === 1}success{/if}">{if $service['status'] === 0}已停止{/if}{if $service['status'] === 1}运行中{/if}</span></td>
+              <td>{$service['create_time']}</td>
+              <td class="td-edit"><a class="btn btn-{if $service['status'] === 0}success{/if}{if $service['status'] === 1}danger{/if} btn-xs" href="service.php?action={if $service['status'] === 0}start{/if}{if $service['status'] === 1}stop{/if}&company={$service['id']}"><span class="glyphicon glyphicon-{if $service['status'] === 0}expand{/if}{if $service['status'] === 1}unchecked{/if}"></span> {if $service['status'] === 0}启 动{/if}{if $service['status'] === 1}停 止{/if}</a></td>
+            </tr>
+            {/foreach}
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

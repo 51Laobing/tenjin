@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>呼叫中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.new.css">
+    <link rel="stylesheet" type="text/css" href="/css/non-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/extend.css">
+    <style type="text/css">
+      th {
+      text-align:center;
+      }
+      td {
+      text-align:center;
+      }
+      .table .td-icon {
+      width:50px;
+      }
+      condensed>tfoot>tr>.td-edit {
+      text-align:right;
+      padding-right:55px;
+      }
+      .info {
+      padding:1px 5px;
+      font-size:10px;
+      color:#ffffff;
+      border-radius:8px;
+      }
+      .info-default {
+      background-color:#9de486;
+      }
+      .info-primary {
+      background-color:#a6c7B8;
+      }
+      .info-success {
+      background-color:#94dc94;
+      }
+      .info-warning {
+      background-color:#f1bb70;
+      }
+      .info-danger {
+      background-color:#e88987;
+      }
+      .text-success {
+      font-weight:bold;
+      }
+      .breadcrumb>li+li:before {
+      content:no-open-quote;
+      padding: 0 5px;
+      color:#cccccc;
+      }
+      .navbar-inverse .badge {
+      color:#ffffff;
+      background-color:#f76e6a;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo.png"></a>
+          <a class="navbar-brand" href="#">控制面板</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">企业管理</a></li>
+            <li><a href="users.php">账号管理</a></li>
+            <li><a href="sounds.php">语音审核{if $alert_sound > 0} <span class="badge badge-danger">{$alert_sound}</span>{/if}</a></li>
+            <li><a href="service.php">服务管理</a></li>
+            <li><a href="status.php">服务器状态</a></li>
+            <li><a href="logs.php">日志记录</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{$user['uid']}</a></li>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退 出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container box">
+      <div>
+        <ol class="breadcrumb">
+          <li>企业数量: <span class="info info-default">{$total['companys']}</span></li>
+          <li>座席总数: <span class="info info-success">{$total['agents']}</span></li>
+          <li>线路总数: <span class="info info-primary">{$total['concurrents']}</span></li>
+          <li>上线总数: <span class="info info-warning">{$total['online']}</span></li>
+          <li class="pull-right" data-toggle="modal" data-target="#myModal"><a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> 创建企业</a></li>
+        </ol>
+      </div>
+      <div>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="td-icon text-center">#</th>
+              <th>企业编号</th>
+              <th>公司名称</th>
+              <th>VIP级别</th>
+              <th>座席数量</th>
+              <th>线路并发</th>
+              <th>上线人数</th>
+              <th>创建时间</th>
+              <th class="td-edit">账户操作</th>
+              <th class="td-edit">编辑操作</th>
+            </tr>
+          </thead>
+          <tbody class="text-muted">
+            {if is_array($companys)}
+            {foreach $companys as $company}
+            <tr>
+              <td><span class="glyphicon glyphicon-globe"></span></td>
+              <td>{$company['id']}</td>
+              <td>{$company['name']}</td>
+              <td><img src="/img/level_{$company['level']}.gif"></td>
+              <td>{$company['agents']}</td>
+              <td>{$company['concurrent']}</td>
+              <td>10</td>
+              <td>{$company['create_time']}</td>
+              <td class="td-edit"><a class="btn btn-default btn-xs" href="javascript:remove({$company['id']})"><span class="glyphicon glyphicon-trash"></span> 删 除</a></td>
+              <td class="td-edit"><a class="btn btn-default btn-xs" href="company/edit.php?id={$company['id']}"><span class="glyphicon glyphicon-edit"></span> 编 辑</a></td>
+            </tr>
+            {/foreach}
+            {/if}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">创建新账户</h4>
+            </div>
+            <form class="form-horizontal" action="company.php" method="post">
+              <div class="modal-body">
+                <div class="form-group">
+                  <label class="control-label col-sm-2 col-sm-offset-1">公司名称: </label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control input-sm" style="font-weight:bold" name="company_name">
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="help-block">* 公司名称</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2 col-sm-offset-1">座席数量: </label>
+                  <div class="col-sm-5">
+                    <input type="number" class="form-control input-sm" name="agents">
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="help-block">* 座席数量</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2 col-sm-offset-1">中继账号: </label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control input-sm" name="gw_user">
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="help-block">* 中继网关账号</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2 col-sm-offset-1">中继密码: </label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control input-sm" name="gw_password">
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="help-block">* 中继网关密码</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2 col-sm-offset-1">服务器IP: </label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control input-sm" name="gw_ip">
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="help-block">* 中继服务器IP地址</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2 col-sm-offset-1">线路数量: </label>
+                  <div class="col-sm-5">
+                    <input type="number" class="form-control input-sm" name="concurrent">
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="help-block">* 最大线路并发数量</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2 col-sm-offset-1">计费账号: </label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control input-sm" name="billing">
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="help-block">VOS计费账户号码</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2 col-sm-offset-1">语音选项:  </label>
+                  <div class="checkbox col-sm-5">
+                    <label>
+                      <input type="checkbox" name="sound_check"> 开启语音内容审核
+                    </label>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="help-block">对语音内容进行审核</p>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <center>
+                  <input type="hidden" name="action" value="create">
+                  <button type="submit" class="btn btn-primary">确认创建</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                </center>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/layer.js"></script>
+    <script type="text/javascript" src="/js/company.js"></script>
+  </body>
+</html>
