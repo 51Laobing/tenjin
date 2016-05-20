@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -std=gnu99 -Wall -pedantic
 INCLUDE = -I /usr/include -I /usr/local/include
-ESLPATH = /root/freeswitch-1.6.7/libs/esl
+ESLPATH = /root/freeswitch-1.6.8/libs/esl
 
 all: upd server
 
