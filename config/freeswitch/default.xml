@@ -150,12 +150,4 @@
       </condition>
     </extension>
   </context>
-
-  <context name="test">
-    <extension name="test">
-      <condition field="destination_number" expression="^1[3578][0-9]">
-	    <action application="bridge" data="sofia/gateway/trunk.1.gw/${destination_number}"/>
-      </condition>
-    </extension>
-  </context>
 </include>
