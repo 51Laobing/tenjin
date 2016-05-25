@@ -244,8 +244,9 @@ function get_agent_today_all_order($db, $uid) {
 
     $uid = strval($uid);
     
-    $result = $db->select('orders', '*', ['AND' => ['creator' => $uid, 'create_time[<>]' => [date('Y-m-d 08:00:00'), date('Y-m-d 20:00:00')]], 'ORDER' => ['create_time ASC']]);
-    
+    //$result = $db->select('orders', '*', ['AND' => ['creator' => $uid, 'create_time[<>]' => [date('Y-m-d 08:00:00'), date('Y-m-d 20:00:00')]], 'ORDER' => ['create_time ASC']]);
+    $result = $db->select('orders', '*', ['AND' => ['creator' => $uid], 'ORDER' => ['create_time ASC']]);
+
     if ($result) {
         return $result;
     }
