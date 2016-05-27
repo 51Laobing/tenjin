@@ -14,8 +14,8 @@ if (!isset($_POST['username']) || !isset($_POST['password'])) {
     exit();
 }
 
-$uid = $_POST['username'];
-$password = $_POST['password'];
+$uid = stripcslashes(trim($_POST['username']));
+$password = stripcslashes(trim($_POST['password']));
 
 $redis = redis(REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB);
 
