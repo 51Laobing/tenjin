@@ -59,12 +59,12 @@ $ chown -R postgres:postgres /var/run/pgbouncer
 ### 安装教程
 * 关闭相关服务
 ```shell
-systemctl disable auditd.service
-systemctl disable firewalld.service
-systemctl disable microcode.service
-systemctl disable NetworkManager.service
-systemctl disable postfix.service
-systemctl disable tuned.service
+$ systemctl disable auditd.service
+$ systemctl disable firewalld.service
+$ systemctl disable microcode.service
+$ systemctl disable NetworkManager.service
+$ systemctl disable postfix.service
+$　systemctl disable tuned.service
 ```
 * 内核参数优化 /etc/sysctl.conf
 ```shell
