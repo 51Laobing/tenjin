@@ -97,6 +97,13 @@ $ yum install -y sqlite-devel libcurl-devel pcre-devel speex-devel ldns-devel li
 $ yum install -y libdb4* libidn-devel unbound-devel libuuid-devel lua-devel libsndfile-devel gsm gsm-devel
 $ yum install -y nginx php php-fpm php-devel php-pgsql php-mbstring redis hiredis hiredis-devel libconfig libconfig-devel
 ```
+* 安装 PostgreSQL 数据库
+```shell
+$ yum install -y postgresql postgresql-server postgresql-devel
+$ postgresql-setup initdb
+$ systemctl enable postgresql.service
+$ systemctl start postgresql.service
+```
 ### FreeSWITCH 中文语音包 (只包含部分中文语音)
 github 下载地址: [freeswitch-sound-cn](https://github.com/log2k/freeswitch-sound-cn/archive/master.zip) 或者 git clone
 ```
