@@ -36,12 +36,12 @@ $ make install
 ```
 
 ##### pgbouncer 数据库连接池
-1. 安装libevent依赖包
+* 安装libevent依赖包
 ```shell
 $ yum install -y libevent libevent-devel
 ```
 
-2. 安装 pbgbouncer
+* 安装 pbgbouncer
 ```shell
 $ tar -zxvf pgbouncer-1.7.2.tar.gz
 $ cd pgbouncer-1.7.2
