@@ -25,10 +25,10 @@ $ make
 $ make install
 ```
 
-##### phpredis PHP的redis数据库扩展
+##### PHP的redis数据库扩展
 ```shell
-$ tar -zxvf pgbouncer-1.7.2.tar.gz
-$ cd pgbouncer-1.7.2
+$ tar -zxvf phpredis-2.2.7.tar.gz
+$ cd phpredis-2.2.7
 $ phpize
 $ ./configure
 $ make
