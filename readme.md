@@ -66,9 +66,8 @@ systemctl disable NetworkManager.service
 systemctl disable postfix.service
 systemctl disable tuned.service
 ```
-* 优化内核相关参数
+* 内核参数优化 /etc/sysctl.conf
 ```shell
-/* /etc/sysctl.conf */
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv4.ip_forward = 1
@@ -77,7 +76,9 @@ net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_tw_recycle = 1
 net.ipv4.tcp_fin_timeout = 30
 fs.file-max = 2097152
-/* /etc/security/limits.conf */
+```
+* 内核参数优化 /etc/security/limits.conf
+```shell
 * soft nofile 102400
 * hard nofile 102400
 * soft nproc unlimited
