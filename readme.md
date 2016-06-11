@@ -16,6 +16,45 @@ tenjin 是基于 FreeSWITCH 的开源呼叫中心系统，管理系统主要使�
 2. 群呼转座席固定模式
 3. 半自动一对一外呼
 
+### 相关依赖包安装
+#### mod_bcg729 语音编码
+```shell
+$ tar -zxvf mod_bcg729.tar.gz
+$ cd mod_bcg729
+$ make
+$ make install
+```
+
+#### phpredis PHP的redis数据库扩展
+```shell
+$ tar -zxvf pgbouncer-1.7.2.tar.gz
+$ cd pgbouncer-1.7.2
+$ phpize
+$ ./configure
+$ make
+$ make install
+```
+
+#### pgbouncer 数据库连接池
+1. 安装libevent依赖包
+```shell
+$ yum install -y libevent libevent-devel
+```
+
+2. 安装 pbgbouncer
+```shell
+$ tar -zxvf pgbouncer-1.7.2.tar.gz
+$ cd pgbouncer-1.7.2
+$ ./configure
+$ make
+$ make install
+$ cp etc/pgbouncer.ini /etc
+$ mkdir -p /etc/pgbouncer
+$ mkdir -p /var/log/pgbouncer
+$ mkdir -p /var/run/pgbouncer
+$ chown -R postgres:postgres /var/log/pgbouncer
+$ chown -R postgres:postgres /var/run/pgbouncer
+```
 ### FreeSWITCH 中文语音包 (只包含部分中文语音)
 github 下载地址: [freeswitch-sound-cn](https://github.com/log2k/freeswitch-sound-cn/archive/master.zip) 或者 git clone
 ```
