@@ -17,7 +17,7 @@ tenjin 是基于 FreeSWITCH 的开源呼叫中心系统，管理系统主要使�
 3. 半自动一对一外呼
 
 ### 相关依赖包安装
-#### mod_bcg729 语音编码
+##### mod_bcg729 语音编码
 ```shell
 $ tar -zxvf mod_bcg729.tar.gz
 $ cd mod_bcg729
@@ -25,7 +25,7 @@ $ make
 $ make install
 ```
 
-#### phpredis PHP的redis数据库扩展
+##### phpredis PHP的redis数据库扩展
 ```shell
 $ tar -zxvf pgbouncer-1.7.2.tar.gz
 $ cd pgbouncer-1.7.2
@@ -35,7 +35,7 @@ $ make
 $ make install
 ```
 
-#### pgbouncer 数据库连接池
+##### pgbouncer 数据库连接池
 1. 安装libevent依赖包
 ```shell
 $ yum install -y libevent libevent-devel
