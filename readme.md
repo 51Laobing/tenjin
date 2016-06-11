@@ -130,6 +130,6 @@ $ make install
 ### FreeSWITCH 中文语音包 (只包含部分中文语音)
 github 下载地址: [freeswitch-sound-cn](https://github.com/log2k/freeswitch-sound-cn/archive/master.zip) 或者 git clone
 ```
-git clone git@github.com:log2k/freeswitch-sound-cn.git sounds
-cp -R sounds /usr/local/freeswitch
+git clone https://github.com/log2k/freeswitch-sound-cn.git
+cp -R freeswitch-sound-cn /usr/local/freeswitch/sounds
 ```
