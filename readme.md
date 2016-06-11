@@ -55,6 +55,36 @@ $ mkdir -p /var/run/pgbouncer
 $ chown -R postgres:postgres /var/log/pgbouncer
 $ chown -R postgres:postgres /var/run/pgbouncer
 ```
+
+### 安装教程
+* 关闭相关服务
+```shell
+systemctl disable auditd.service
+systemctl disable firewalld.service
+systemctl disable microcode.service
+systemctl disable NetworkManager.service
+systemctl disable postfix.service
+systemctl disable tuned.service
+```
+* 优化内核相关参数
+编辑文件 /etc/sysctl.conf
+```shell
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv4.ip_forward = 1
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_fin_timeout = 30
+fs.file-max = 2097152
+```
+编辑文件 /etc/security/limits.conf
+```shell
+* soft nofile 102400
+* hard nofile 102400
+* soft nproc unlimited
+* hard nproc unlimited
+```
 ### FreeSWITCH 中文语音包 (只包含部分中文语音)
 github 下载地址: [freeswitch-sound-cn](https://github.com/log2k/freeswitch-sound-cn/archive/master.zip) 或者 git clone
 ```
