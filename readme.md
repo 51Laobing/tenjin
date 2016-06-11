@@ -64,7 +64,7 @@ $ systemctl disable firewalld.service
 $ systemctl disable microcode.service
 $ systemctl disable NetworkManager.service
 $ systemctl disable postfix.service
-$　systemctl disable tuned.service
+$ systemctl disable tuned.service
 ```
 * 内核参数优化 /etc/sysctl.conf
 ```shell
@@ -83,6 +83,19 @@ fs.file-max = 2097152
 * hard nofile 102400
 * soft nproc unlimited
 * hard nproc unlimited
+```
+
+* 安装 yum 源 epel-release
+```shell
+$ yum -y install epel-release
+$ yum makecache fast
+```
+* 安装相关依赖软件包和开发库
+```shell
+$ yum install -y gcc gcc-c++ autoconf automake libtool wget python ncurses-devel zlib-devel  openssl-devel e2fsprogs-devel
+$ yum install -y sqlite-devel libcurl-devel pcre-devel speex-devel ldns-devel libedit-devel libxml2-devel libjpeg-devel
+$ yum install -y libdb4* libidn-devel unbound-devel libuuid-devel lua-devel libsndfile-devel gsm gsm-devel
+$ yum install -y nginx php php-fpm php-devel php-pgsql php-mbstring redis hiredis hiredis-devel libconfig libconfig-devel
 ```
 ### FreeSWITCH 中文语音包 (只包含部分中文语音)
 github 下载地址: [freeswitch-sound-cn](https://github.com/log2k/freeswitch-sound-cn/archive/master.zip) 或者 git clone
