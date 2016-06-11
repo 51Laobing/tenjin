@@ -94,7 +94,7 @@ $ chown -R postgres:postgres /var/run/pgbouncer
 $ wget http://files.freeswitch.org/freeswitch-releases/freeswitch-1.6.8.tar.gz
 $ cd freeswitch-1.6.8
 $ emacs modules.conf
-$ ./configure --enable-optimization --disable-debug --disable-libyuv --disable-libvpx --with-cachedir=/dev/shm --enable-core-pgsql-support
+$ ./configure --disable-debug --disable-libyuv --disable-libvpx --enable-core-pgsql-support
 $ make
 $ make install
 ```
