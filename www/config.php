@@ -2,7 +2,7 @@
 $app = __DIR__;
 
 // server domain
-define('DOMAIN', '192.168.200.41');
+define('DOMAIN', '192.168.1.100');
 
 // redis database configure
 define('REDIS_HOST', '127.0.0.1');
@@ -11,10 +11,10 @@ define('REDIS_PASSWORD', NULL);
 define('REDIS_DB', 0);
 
 // radius server configure
-define('RADIUS_HOST', '192.168.200.115');
+define('RADIUS_HOST', '127.0.0.1');
 define('RADIUS_PORT', 6379);
 define('RADIUS_PASSWORD', NULL);
-define('RADIUS_DB', 1);
+define('RADIUS_DB', 0);
 
 // postgres database
 define('PGSQL_HOST', '127.0.0.1');
@@ -24,11 +24,11 @@ define('PGSQL_PASSWORD', 'postgres');
 define('PGSQL_DB', 'postgres');
 
 // order database
-define('ORDER_HOST', '192.168.200.32');
+define('ORDER_HOST', '127.0.0.1');
 define('ORDER_PORT', 5432);
-define('ORDER_USER', 'pgsql');
-define('ORDER_PASSWORD', 'ldxz5566');
-define('ORDER_DB', 'db41');
+define('ORDER_USER', 'postgres');
+define('ORDER_PASSWORD', 'postgres');
+define('ORDER_DB', 'postgres');
 
 // postgres database
 define('PBX_HOST', '127.0.0.1');
@@ -38,11 +38,11 @@ define('PBX_PASSWORD', 'postgres');
 define('PBX_DB', 'freeswitch');
 
 // cdr database
-define('CDR_HOST', '192.168.200.23');
+define('CDR_HOST', '127.0.0.1');
 define('CDR_PORT', 5432);
 define('CDR_USER', 'postgres');
-define('CDR_PASSWORD', 'ldxz5566');
-define('CDR_DB', 'db01');
+define('CDR_PASSWORD', 'postgres');
+define('CDR_DB', 'postgres');
 
 // freeswitch esl configure
 define('ESL_HOST', '127.0.0.1');
