@@ -8,5 +8,5 @@ userlist.txt      pgbouncer登录认证文件(/etc/pgbouncer)
 ```
 ### 安装方法
 ```
-make install
+$ make install
 ```
