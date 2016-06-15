@@ -15,9 +15,11 @@ test: test.c config.c config.h $(ESLPATH)/.libs/libesl.a
 	gcc -I $(ESLPATH)/src/include -lm -pthread -lconfig test.c config.c $(ESLPATH)/.libs/libesl.a -o test
 
 install:
-	/bin/cp -vf upd /var/www
 	/bin/cp -vf server /usr/bin
-	/bin/chown apache:apache /var/www
+	/usr/bin/mkdir -pv /var/www
+	/bin/cp -vf upd /var/www
+	/bin/cp -vf config.conf /etc
+	/bin/chown -R apache:apache /var/www
 
 clean:
 	rm -rf upd server
